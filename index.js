@@ -110,13 +110,13 @@ const { SSL_OP_NETSCAPE_CHALLENGE_BUG, SSL_OP_SSLEAY_080_CLIENT_DH_BUG } = requi
 const { token } = require('./config.json');
 
 const call = "!";
-const managerRole = "758548822476980234";
-const secretChannel = "766159287784701952"; // 801951035161444442
+const managerRole = "492250278784139264";
+const secretChannel = "801951035161444442";
 
-defaultRoleId = "753512884604239893";
-roleToAddId = "752055286734389329";
-newMembersChannelId = "753504061860479039";
-mailNotificationRole = "758571392081461248";
+defaultRoleId = "753543665053335552";
+roleToAddId = "492242981726978058";
+newMembersChannelId = "492677607327006720";
+mailNotificationRole = "763538056997109761";
 
 var mailChecked = false;
 var channelCount;
@@ -239,7 +239,7 @@ function getRecentEmail(auth) {
     var ihatenodejs = i;
     // OLD gmail.users.messages.list({auth: auth, userId: 'me', 'q': "is:unread from:"+email[ihatenodejs]}, function(err, response) {
       // REAL, MAKE SURE TO CHANGE gmail.users.messages.list({auth: auth, userId: 'me', 'q': "is:unread {from:(verena@questionable.co.nz) from:(kevin@questionable.co.nz)}"}, function(err, response) {
-        gmail.users.messages.list({auth: auth, userId: 'me', 'q': "is:unread {from:(qrlbotthing@gmail.com) from:(gddraconic@gmail.com)}"}, function(err, response) {
+        gmail.users.messages.list({auth: auth, userId: 'me', 'q': "is:unread {from:(verena@questionable.co.nz) from:(verena@questionable.co.nz)}"}, function(err, response) {
       setTimeout(() => {
         if (err) {
             console.log("Error getting mail: "+err);
