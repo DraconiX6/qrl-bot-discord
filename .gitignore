@@ -1,0 +1,6 @@
+node_modules
+fullMessages/*
+attachments/*
+credentials.json
+token.json
+config.json
