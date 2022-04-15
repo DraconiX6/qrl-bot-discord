@@ -239,7 +239,7 @@ function getRecentEmail(auth) {
     var ihatenodejs = i;
     // OLD gmail.users.messages.list({auth: auth, userId: 'me', 'q': "is:unread from:"+email[ihatenodejs]}, function(err, response) {
       // REAL, MAKE SURE TO CHANGE gmail.users.messages.list({auth: auth, userId: 'me', 'q': "is:unread {from:(verena@questionable.co.nz) from:(kevin@questionable.co.nz)}"}, function(err, response) {
-        gmail.users.messages.list({auth: auth, userId: 'me', 'q': "is:unread {from:(verena@questionable.co.nz) from:(verena@questionable.co.nz)}"}, function(err, response) {
+        gmail.users.messages.list({auth: auth, userId: 'me', 'q': "is:unread {from:(verena@questionable.co.nz) from:(kevin@questionable.co.nz)}"}, function(err, response) {
       setTimeout(() => {
         if (err) {
             console.log("Error getting mail: "+err);
