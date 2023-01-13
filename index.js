@@ -70,26 +70,28 @@ function getNewToken(oAuth2Client, callback) {
   });
 }
 
+
+
 /**
  * Lists the labels in the user's account.
  *
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
-function listLabels(auth) {
+ function listLabels(auth) {
   const gmail = google.gmail({version: 'v1', auth});
   gmail.users.labels.list({
     userId: 'me',
   }, (err, res) => {
     if (err) return console.log('The API returned an error: ' + err);
     const labels = res.data.labels;
-    // if (labels.length) {
-    //   console.log('Labels:');
-    //   labels.forEach((label) => {
-    //     console.log(`- ${label.name}`);
-    //   });
-    // } else {
-    //   console.log('No labels found.');
-    // }
+    if (labels.length) {
+      console.log('Labels:');
+      labels.forEach((label) => {
+        console.log(`- ${label.name}`);
+      });
+    } else {
+      console.log('No labels found.');
+    }
   });
 }
 
@@ -109,14 +111,25 @@ const { SSL_OP_NETSCAPE_CHALLENGE_BUG, SSL_OP_SSLEAY_080_CLIENT_DH_BUG } = requi
 
 const { token } = require('./config.json');
 
-const call = "!";
-const managerRole = "492250278784139264";
-const secretChannel = "801951035161444442";
+// --real--
+// const call = "!";
+// const managerRole = "492250278784139264";
+// const secretChannel = "801951035161444442";
 
-defaultRoleId = "753543665053335552";
-roleToAddId = "492242981726978058";
-newMembersChannelId = "492677607327006720";
-mailNotificationRole = "763538056997109761";
+// defaultRoleId = "753543665053335552";
+// roleToAddId = "492242981726978058";
+// newMembersChannelId = "492677607327006720";
+// mailNotificationRole = "763538056997109761";
+
+// --test--
+const call = "!";
+const managerRole = "758548822476980234";
+const secretChannel = "766159287784701952";
+
+defaultRoleId = "752055286734389329";
+roleToAddId = "743794514778521691";
+newMembersChannelId = "743693457033527349";
+mailNotificationRole = "758571392081461248";
 
 var mailChecked = false;
 var channelCount;
@@ -234,12 +247,17 @@ client.on("guildMemberAdd", member => {
 //   else channelToSendTo[i-1].send(message);
 // }
 
+function decodeBodyData(bodyData) {
+  buff = Buffer.from(bodyData, 'base64');
+  return buff.toString();
+}
+
 function getRecentEmail(auth) {
   for (i = 0; i < channelCount; i++) {
     var ihatenodejs = i;
     // OLD gmail.users.messages.list({auth: auth, userId: 'me', 'q': "is:unread from:"+email[ihatenodejs]}, function(err, response) {
       // REAL, MAKE SURE TO CHANGE gmail.users.messages.list({auth: auth, userId: 'me', 'q': "is:unread {from:(verena@questionable.co.nz) from:(kevin@questionable.co.nz)}"}, function(err, response) {
-        gmail.users.messages.list({auth: auth, userId: 'me', 'q': "is:unread {from:(verena@questionable.co.nz) from:(kevin@questionable.co.nz)}"}, function(err, response) {
+        gmail.users.messages.list({auth: auth, userId: 'me', 'q': "is:unread {from:(verena@questionable.co.nz) from:(kevin.waugh@questionable.co.nz)}"}, function(err, response) {
       setTimeout(() => {
         if (err) {
             console.log("Error getting mail: "+err);
@@ -262,6 +280,7 @@ function getRecentEmail(auth) {
                   console.log('Error getting messages: ' + err);
                   return;
               }
+              var message_raw = "";
               attachments = [];
               encodedAttachments = [];
               attachmentNames = [];
@@ -294,35 +313,29 @@ function getRecentEmail(auth) {
                 return;
               }
 
-              function decodeBodyData(bodyData) {
-                buff = Buffer.from(bodyData, 'base64');
-                return buff.toString();
-              }
-
                 if (responseParts[0].mimeType == 'multipart/alternative') responseParts = responseParts[0]['parts'];
                 if (responseParts[1].mimeType == 'text/html') {
                   fullMessage = decodeBodyData(responseParts[1].body.data);
                   dateAndTimeSent = today.getYear().toString()+today.getMonth().toString()+today.getDate().toString()+today.getHours().toString()+today.getMinutes().toString()+today.getSeconds().toString();
                   // OLD fullMessageName = "./fullMessages/"+email+" sent on "+dateAndTimeSent+".html";
-                  fullMessageName = "./fullMessages/email sent on "+dateAndTimeSent+".html";
-                  fs.writeFile(fullMessageName,fullMessage, (err) => {
-                    if (err) return console.error(err);
-                  });
-                  client.channels.cache.find(ch => ch.id === secretChannel).send({files:[{attachment:fullMessageName}]});
-                  setTimeout(() => {fullMessageUrl = client.channels.cache.find(ch => ch.id === secretChannel).lastMessage.attachments.first().url;},2000);
+                  // fullMessageName = "./fullMessages/email sent on "+dateAndTimeSent+".html";
+                  // fs.writeFile(fullMessageName,fullMessage, (err) => {
+                  //   if (err) return console.error(err);
+                  // });
+                  // client.channels.cache.find(ch => ch.id === secretChannel).send({files:[{attachment:fullMessageName}]});
+                  // setTimeout(() => {fullMessageUrl = client.channels.cache.find(ch => ch.id === secretChannel).lastMessage.attachments.first().url;},2000);
 
-                  insert = function insert(main_string, ins_string, pos) {
-                    if(typeof(pos) == "undefined") {
-                     pos = 0;
-                    }
-                    if(typeof(ins_string) == "undefined") {
-                     ins_string = '';
-                    }
-                    return main_string.slice(0, pos) + ins_string + main_string.slice(pos);
-                  }
+                  // insert = function insert(main_string, ins_string, pos) {
+                  //   if(typeof(pos) == "undefined") {
+                  //    pos = 0;
+                  //   }
+                  //   if(typeof(ins_string) == "undefined") {
+                  //    ins_string = '';
+                  //   }
+                  //   return main_string.slice(0, pos) + ins_string + main_string.slice(pos);
+                  // }
 
-                  text = decodeBodyData(message_raw)
-                  .replace(/\*/g,'').replace(/\r?\n|\r/g," ");
+                  // text = decodeBodyData(message_raw).replace(/\*/g,'').replace(/\r?\n|\r/g," ");
 
                   // lineBreaks = [];
                   // fullMessageForLineBreaks = fullMessage.split("p dir");
@@ -356,7 +369,8 @@ function getRecentEmail(auth) {
                 for (i=0;i<Math.ceil(text.length/5900);i++) {
                   embed.push(new MessageEmbed()
                     .setColor('#0099ff')
-                    .setAuthor('Click to download this message', 'https://cdn.discordapp.com/avatars/743691445063516220/54083ff3ba6a16fd00621bbea3b29fd3.png', fullMessageUrl)
+                    // .setAuthor('Click to download this message', 'https://cdn.discordapp.com/avatars/743691445063516220/54083ff3ba6a16fd00621bbea3b29fd3.png', fullMessageUrl)
+                    .setAuthor('QRL Bot', 'https://cdn.discordapp.com/avatars/743691445063516220/54083ff3ba6a16fd00621bbea3b29fd3.png')
                     // .setTitle(`Email from ${email[ihatenodejs]} - Part ${i+1} of ${Math.ceil(text.length/5950)}`)
                     .setTitle(`New email - Part ${i+1} of ${Math.ceil(text.length/5950)}`)
                     // .setDescription(text.substr(0,2047))
